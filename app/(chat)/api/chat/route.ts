@@ -165,7 +165,7 @@ export async function POST(request: Request) {
           onFinish: async ({ usage }) => {
             finalMergedUsage = usage as AppUsage;
             dataStream.write({ type: "data-usage", data: finalMergedUsage });
-          },,
+          },
         });
 
         result.consumeStream();
