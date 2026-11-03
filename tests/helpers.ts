@@ -24,7 +24,7 @@ export async function createAuthenticatedContext({
   browser: Browser;
   name: string;
 }): Promise<UserContext> {
-  const directory = path.join(__dirname, "../playwright/.sessions");
+  const directory = path.join(import.meta.dirname, "../playwright/.sessions");
 
   if (!fs.existsSync(directory)) {
     fs.mkdirSync(directory, { recursive: true });
