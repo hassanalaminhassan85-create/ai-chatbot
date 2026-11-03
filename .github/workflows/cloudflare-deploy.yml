@@ -32,6 +32,8 @@ jobs:
     needs: build
     if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/cloudflare/ai-chatbot-migration' }}
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -44,9 +46,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
       - name: Deploy to Cloudflare Workers
-        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
           CLOUDFLARE_ACCOUNT_ID: 8f58ef5027ba3822189f6387979ce898
         run: |
           npx @vinext/cloudflare deploy
@@ -56,5 +56,5 @@ jobs:
             rm -f /tmp/worker-secrets.json
           fi
       - name: Explain missing Cloudflare credential
-        if: ${{ secrets.CLOUDFLARE_API_TOKEN == '' }}
+        if: ${{ env.CLOUDFLARE_API_TOKEN == '' }}
         run: echo "Build succeeded, but deployment was skipped because repository secret CLOUDFLARE_API_TOKEN is not configured."
