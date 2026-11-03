@@ -4,6 +4,7 @@ export default defineConfig({
   accountId: "8f58ef5027ba3822189f6387979ce898",
   worker: defineWorker({
     name: "ai-chatbot",
+    entrypoint: "./worker/index.ts",
     compatibilityDate: "2026-11-03",
     compatibilityFlags: ["nodejs_compat"],
     workersDev: true,
