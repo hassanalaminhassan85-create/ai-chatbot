@@ -28,12 +28,12 @@ export const myProvider = isTestEnvironment
     })()
   : customProvider({
       languageModels: {
-        "chat-model": workersAI("@cf/zai-org/glm-4.7-flash"),
+        "chat-model": workersAI("@cf/zai-org/glm-5.3-flash"),
         "chat-model-reasoning": wrapLanguageModel({
           model: workersAI("@cf/openai/gpt-oss-120b"),
           middleware: extractReasoningMiddleware({ tagName: "think" }),
         }),
-        "title-model": workersAI("@cf/zai-org/glm-4.7-flash"),
-        "artifact-model": workersAI("@cf/zai-org/glm-4.7-flash"),
+        "title-model": workersAI("@cf/zai-org/glm-5.3-flash"),
+        "artifact-model": workersAI("@cf/zai-org/glm-5.3-flash"),
       },
     });
