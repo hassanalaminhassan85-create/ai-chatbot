@@ -45,6 +45,11 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+      - name: Apply Cloudflare D1 database migrations
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: 8f58ef5027ba3822189f6387979ce898
+        run: npx wrangler d1 migrations apply ai-chatbot --remote --config wrangler.toml
       - name: Deploy to Cloudflare Workers
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
         env:
