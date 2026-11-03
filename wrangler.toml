@@ -1,0 +1,19 @@
+name = "ai-chatbot"
+main = "worker/index.ts"
+compatibility_date = "2026-11-03"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ai-chatbot"
+database_id = "fd7eac79-7e5d-4100-9f5c-f6b959e3b287"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "ai-chatbot-files"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
