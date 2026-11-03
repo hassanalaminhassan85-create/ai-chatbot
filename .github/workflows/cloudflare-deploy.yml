@@ -1,0 +1,60 @@
+name: Cloudflare chatbot build and deploy
+
+on:
+  push:
+    branches:
+      - cloudflare/ai-chatbot-migration
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies and refresh lockfile
+        run: pnpm install --no-frozen-lockfile
+      - name: Check Next.js compatibility
+        run: pnpm exec vinext check
+      - name: Build Cloudflare application
+        run: pnpm run build
+
+  deploy:
+    needs: build
+    if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/cloudflare/ai-chatbot-migration' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Deploy to Cloudflare Workers
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 8f58ef5027ba3822189f6387979ce898
+        run: |
+          npx @vinext/cloudflare deploy
+          if ! npx wrangler secret list --name ai-chatbot | grep -q 'AUTH_SECRET'; then
+            node -e 'const fs=require("node:fs"); const c=require("node:crypto"); fs.writeFileSync("/tmp/worker-secrets.json", JSON.stringify({AUTH_SECRET:c.randomBytes(48).toString("base64url")}));'
+            npx wrangler secret bulk /tmp/worker-secrets.json --name ai-chatbot
+            rm -f /tmp/worker-secrets.json
+          fi
+      - name: Explain missing Cloudflare credential
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN == '' }}
+        run: echo "Build succeeded, but deployment was skipped because repository secret CLOUDFLARE_API_TOKEN is not configured."
