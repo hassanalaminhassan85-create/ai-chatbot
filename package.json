@@ -9,13 +9,15 @@
     "lint": "npx ultracite@latest check",
     "format": "npx ultracite@latest fix",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "npx tsx lib/db/migrate.ts",
+    "db:migrate": "wrangler d1 migrations apply ai-chatbot --remote",
     "db:studio": "drizzle-kit studio",
-    "db:push": "drizzle-kit push",
+    "db:push": "echo 'Use reviewed SQL migrations in ./migrations and db:migrate; direct schema push is disabled for production.'",
     "db:pull": "drizzle-kit pull",
     "db:check": "drizzle-kit check",
     "db:up": "drizzle-kit up",
-    "test": "export PLAYWRIGHT=True && pnpm exec playwright test"
+    "test": "export PLAYWRIGHT=True && pnpm exec playwright test",
+    "build:vinext": "vinext build",
+    "dev:vinext": "vinext dev"
   },
   "dependencies": {
     "@ai-sdk/gateway": "^2.0.18",
