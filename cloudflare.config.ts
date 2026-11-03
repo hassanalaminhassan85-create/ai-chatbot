@@ -10,6 +10,7 @@ export default defineConfig({
     workersDev: true,
     previewUrls: true,
     env: {
+      ASSETS: bindings.assets(),
       DB: bindings.d1({
         id: "fd7eac79-7e5d-4100-9f5c-f6b959e3b287",
         name: "ai-chatbot",
