@@ -17,7 +17,7 @@
     "test": "export PLAYWRIGHT=True && pnpm exec playwright test",
     "dev:vinext": "vinext dev",
     "build:vinext": "vinext build",
-    "deploy": "vinext-cloudflare deploy"
+    "deploy": "npx @vinext/cloudflare deploy"
   },
   "dependencies": {
     "@ai-sdk/provider": "2.0.0",
@@ -106,7 +106,10 @@
     "@vinext/cloudflare": "latest",
     "@cloudflare/vite-plugin": "latest",
     "vite": "latest",
-    "wrangler": "latest"
+    "wrangler": "latest",
+    "cf": "latest",
+    "@vitejs/plugin-rsc": "latest",
+    "react-server-dom-webpack": "latest"
   },
   "packageManager": "pnpm@9.12.3"
 }
