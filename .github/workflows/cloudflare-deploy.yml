@@ -47,6 +47,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: Deploy to Cloudflare Workers
         if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
+        env:
           CLOUDFLARE_ACCOUNT_ID: 8f58ef5027ba3822189f6387979ce898
         run: |
           npx @vinext/cloudflare deploy
