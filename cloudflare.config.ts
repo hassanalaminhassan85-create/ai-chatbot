@@ -15,6 +15,7 @@ export default defineConfig({
       }),
       FILES: bindings.r2({ name: "ai-chatbot-files" }),
       AI: bindings.ai(),
+      AUTH_SECRET: bindings.secret(),
     },
     observability: {
       enabled: true,
