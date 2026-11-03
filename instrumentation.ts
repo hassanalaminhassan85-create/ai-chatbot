@@ -1,5 +1,2 @@
-import { registerOTel } from "@vercel/otel";
-
-export function register() {
-  registerOTel({ serviceName: "ai-chatbot" });
-}
+// Cloudflare Workers observability is configured in cloudflare.config.ts.
+export function register() {}
